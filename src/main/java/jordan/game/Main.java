@@ -6,10 +6,11 @@ public class Main {
     public static void main(String[] args) {
         int boardWidth = 8;
         int boardHeight = 8;
-        Player jordan = new HumanPlayer(Side.VERTICAL, "Jordan");
-        Player ai = new AIPlayer(Side.HORIZONTAL, jordan, new BasicEvaluator());
+        AIPlayer ai = new AIPlayer(Side.HORIZONTAL, new BasicEvaluator());
+        AIPlayer ai2 = new AIPlayer(Side.VERTICAL, ai, new BasicEvaluator());
+        ai.setOpponent(ai2);
 
-        Game game = new Game(jordan, ai, boardWidth, boardHeight);
+        Game game = new Game(ai, ai2, boardWidth, boardHeight);
         while (!game.isFinished())
         {
             printGameState(game);

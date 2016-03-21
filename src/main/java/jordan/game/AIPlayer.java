@@ -5,15 +5,19 @@ import java.util.List;
 public class AIPlayer extends Player {
     static int playerCounter = 1;
     private final static int DEPTH = 2;
-    private final Player opponent;
+    private Player opponent;
     private final BoardStateEvaluator evaluator;
 
-    public AIPlayer(Side side, Player opponent, BoardStateEvaluator boardStateEvaluator) {
-        // Is there a nicer way of getting int->char in Java without some annoying ascii offset addition?
+    public AIPlayer(Side side, BoardStateEvaluator boardStateEvaluator) {
+        // TODO: is there a nicer way of getting int->char in Java without some annoying ascii offset addition?
         super(side, String.valueOf(playerCounter).charAt(0));
-        this.opponent = opponent;
         this.evaluator = boardStateEvaluator;
         playerCounter++;
+    }
+
+    public AIPlayer(Side side, Player opponent, BoardStateEvaluator boardStateEvaluator) {
+        this(side, boardStateEvaluator);
+        this.opponent = opponent;
     }
 
     @Override
@@ -79,5 +83,10 @@ public class AIPlayer extends Player {
         }
 
         return evaluator.evaluate(boardState, this, opponent);
+    }
+
+    // TODO: ew
+    public void setOpponent(AIPlayer opponent) {
+        this.opponent = opponent;
     }
 }

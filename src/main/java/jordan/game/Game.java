@@ -12,6 +12,7 @@ public class Game {
     public Game(Player verticalPlayer, Player horizontalPlayer, int boardWidth, int boardHeight) {
         this.verticalPlayer = verticalPlayer;
         this.horizontalPlayer = horizontalPlayer;
+        // TODO: ew
         assert this.verticalPlayer.getSide() == Side.VERTICAL;
         assert this.horizontalPlayer.getSide() == Side.HORIZONTAL;
         nextPlayer = this.verticalPlayer; // TODO: How to decide who goes first?
