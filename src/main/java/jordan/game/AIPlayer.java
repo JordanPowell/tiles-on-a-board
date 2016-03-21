@@ -42,6 +42,7 @@ public class AIPlayer extends Player {
         return bestMove;
     }
 
+    // TODO: Clean up all this horrendous duplication - it's 1:17 AM so it's not my fault
     private int minMaxTree(BoardState boardState, int depth, boolean maximising) {
         if (depth == 0) {
             return evaluateBoardState(boardState);
