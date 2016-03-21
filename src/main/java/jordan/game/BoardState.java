@@ -32,8 +32,12 @@ public class BoardState {
     }
 
     public List<Move> getAvailableMoves() {
+        return getAvailableMoves(sideToPlay);
+    }
+
+    public List<Move> getAvailableMoves(Side side) {
         List<Move> moves = new ArrayList<>();
-        forEachTile((x, y) -> validMoveForSideAt(sideToPlay, x, y).ifPresent(moves::add));
+        forEachTile((x, y) -> validMoveForSideAt(side, x, y).ifPresent(moves::add));
         return moves;
     }
 
@@ -91,5 +95,9 @@ public class BoardState {
             tiles.put(coord, occupier);
         }
         return new BoardState(tiles, width, height, sideToPlay);
+    }
+
+    public Side getNextSideToPlay() {
+        return sideToPlay;
     }
 }

@@ -4,12 +4,12 @@ import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
-        int boardWidth = 3;
-        int boardHeight = 3;
+        int boardWidth = 8;
+        int boardHeight = 8;
         Player jordan = new HumanPlayer(Side.VERTICAL, "Jordan");
-        Player nadroj = new HumanPlayer(Side.HORIZONTAL, "Nadroj");
+        Player ai = new AIPlayer(Side.HORIZONTAL, jordan, new BasicEvaluator());
 
-        Game game = new Game(jordan, nadroj, boardWidth, boardHeight);
+        Game game = new Game(jordan, ai, boardWidth, boardHeight);
         while (!game.isFinished())
         {
             printGameState(game);
