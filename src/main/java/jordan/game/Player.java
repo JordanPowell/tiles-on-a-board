@@ -4,7 +4,7 @@ package jordan.game;
 public abstract class Player extends Occupier {
     private final Side side;
 
-    public Player(Side side, String printCharacter) {
+    public Player(Side side, char printCharacter) {
         super(printCharacter);
         this.side = side;
     }

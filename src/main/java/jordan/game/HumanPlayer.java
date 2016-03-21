@@ -1,13 +1,14 @@
 package jordan.game;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class HumanPlayer extends Player {
     private final String name;
 
     public HumanPlayer(Side side, String name) {
-        super(side, name.substring(0, 1));
+        super(side, name.charAt(0));
         this.name = name;
     }
 
@@ -16,12 +17,16 @@ public class HumanPlayer extends Player {
         List<Move> availableMoves = boardState.getAvailableMoves();
         while (true) {
             Coordinate userCoordinate = askUserForCoordinate();
-            for (Move move : availableMoves) {
-                if (move.getCoordinate().equals(userCoordinate)) {
-                    return move;
-                }
+
+            Optional<Move> move = availableMoves.stream()
+                    .filter(m -> m.getCoordinate().equals(userCoordinate))
+                    .findAny();
+            if (move.isPresent()) {
+                return move.get();
             }
-            indicateInvalidMove();
+            else {
+                indicateInvalidMove();
+            }
         }
     }
 
