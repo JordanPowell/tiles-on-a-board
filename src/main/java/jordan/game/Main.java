@@ -1,5 +1,6 @@
 package jordan.game;
 
+import java.time.Instant;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -10,7 +11,11 @@ public class Main {
         AIPlayer ai2 = new AIPlayer(Side.VERTICAL, ai, new BasicEvaluator());
         ai.setOpponent(ai2);
 
+        //HumanPlayer jordan = new HumanPlayer(Side.VERTICAL, "Jordan");
+        //ai.setOpponent(jordan);
+
         Game game = new Game(ai, ai2, boardWidth, boardHeight);
+        Instant startTime = Instant.now();
         while (!game.isFinished())
         {
             printGameState(game);
@@ -18,6 +23,7 @@ public class Main {
             System.out.println();
         }
         printEndResult(game);
+        System.out.println("Game took " + (Instant.now().toEpochMilli() - startTime.toEpochMilli()) + "ms");
     }
 
     private static void printEndResult(Game game) {
