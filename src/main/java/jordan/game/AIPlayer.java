@@ -2,6 +2,9 @@ package jordan.game;
 
 import java.util.List;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class AIPlayer extends Player {
     static int playerCounter = 1;
     private final static int DEPTH = 2;
@@ -32,7 +35,7 @@ public class AIPlayer extends Player {
         int bestValue = Integer.MIN_VALUE;
         for (Move move : availableMoves)
         {
-            int val = minMaxTree(boardState.stateAfter(move, this, opponent.getSide()), DEPTH, true);
+            int val = minMaxTree(boardState.stateAfter(move, this, opponent.getSide()), DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
             if (val > bestValue)
             {
                 bestMove = move;
@@ -43,7 +46,7 @@ public class AIPlayer extends Player {
     }
 
     // TODO: Clean up all this horrendous duplication - it's 1:17 AM so it's not my fault
-    private int minMaxTree(BoardState boardState, int depth, boolean maximising) {
+    private int minMaxTree(BoardState boardState, int depth, int alpha, int beta, boolean maximising) {
         if (depth == 0) {
             return evaluateBoardState(boardState);
         }
@@ -57,8 +60,12 @@ public class AIPlayer extends Player {
             int bestValue = Integer.MIN_VALUE;
             for (Move move : availableMoves)
             {
-                int val = minMaxTree(boardState.stateAfter(move, this, opponent.getSide()), depth - 1, false);
-                bestValue = Math.max(bestValue, val);
+                int val = minMaxTree(boardState.stateAfter(move, this, opponent.getSide()), depth - 1, alpha, beta, false);
+                bestValue = max(bestValue, val);
+                alpha = max(alpha, bestValue);
+                if (beta <= alpha) {
+                    break;
+                }
             }
             return bestValue;
         }
@@ -67,8 +74,12 @@ public class AIPlayer extends Player {
             int bestValue = Integer.MAX_VALUE;
             for (Move move : availableMoves)
             {
-                int val = minMaxTree(boardState.stateAfter(move, opponent, this.getSide()), depth - 1, true);
-                bestValue = Math.min(bestValue, val);
+                int val = minMaxTree(boardState.stateAfter(move, opponent, this.getSide()), depth - 1, alpha, beta, true);
+                bestValue = min(bestValue, val);
+                beta = min(beta, bestValue);
+                if (beta <= alpha) {
+                    break;
+                }
             }
             return bestValue;
         }
@@ -87,7 +98,7 @@ public class AIPlayer extends Player {
     }
 
     // TODO: ew
-    public void setOpponent(AIPlayer opponent) {
+    public void setOpponent(Player opponent) {
         this.opponent = opponent;
     }
 }
