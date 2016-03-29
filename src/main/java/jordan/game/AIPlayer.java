@@ -7,7 +7,7 @@ import static java.lang.Math.min;
 
 public class AIPlayer extends Player {
     static int playerCounter = 1;
-    private final static int DEPTH = 2;
+    private final static int DEPTH = 3;
     private Player opponent;
     private final BoardStateEvaluator evaluator;
 
