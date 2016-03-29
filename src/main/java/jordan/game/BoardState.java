@@ -11,12 +11,23 @@ public class BoardState {
     private final int width;
     private final int height;
     private final Side sideToPlay;
+    private final Map<Side, List<Move>> moveCache;
 
     public BoardState(final Map<Coordinate, Occupier> occupiedTiles, final int width, final int height, final Side sideToPlay) {
         this.occupiedTiles = Collections.unmodifiableMap(occupiedTiles);
         this.width = width;
         this.height = height;
         this.sideToPlay = sideToPlay;
+        moveCache = precacheMoves();
+    }
+
+    private Map<Side, List<Move>> precacheMoves() {
+        Map<Side, List<Move>> moves = new HashMap<>();
+        for (Side side : Side.values())
+        {
+            moves.put(side, calculateAvailableMoves(side));
+        }
+        return Collections.unmodifiableMap(moves);
     }
 
     public List<Row> getRows() {
@@ -36,6 +47,10 @@ public class BoardState {
     }
 
     public List<Move> getAvailableMoves(Side side) {
+        return moveCache.get(side);
+    }
+
+    private List<Move> calculateAvailableMoves(Side side) {
         List<Move> moves = new ArrayList<>();
         forEachTile((x, y) -> validMoveForSideAt(side, x, y).ifPresent(moves::add));
         return moves;
