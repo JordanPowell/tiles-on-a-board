@@ -10,11 +10,12 @@ public class Main {
         AIPlayer ai = new AIPlayer(Side.HORIZONTAL, new BasicEvaluator());
         AIPlayer ai2 = new AIPlayer(Side.VERTICAL, ai, new BasicEvaluator());
         ai.setOpponent(ai2);
-
-        //HumanPlayer jordan = new HumanPlayer(Side.VERTICAL, "Jordan");
-        //ai.setOpponent(jordan);
-
         Game game = new Game(ai, ai2, boardWidth, boardHeight);
+
+//        HumanPlayer jordan = new HumanPlayer(Side.VERTICAL, "Jordan");
+//        ai.setOpponent(jordan);
+//        Game game = new Game(ai, jordan, boardWidth, boardHeight);
+
         Instant startTime = Instant.now();
         while (!game.isFinished())
         {

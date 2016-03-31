@@ -1,7 +1,6 @@
 package jordan.game;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -11,23 +10,12 @@ public class BoardState {
     private final int width;
     private final int height;
     private final Side sideToPlay;
-    private final Map<Side, List<Move>> moveCache;
 
     public BoardState(final OccupiedBoard occupiedBoard, final int width, final int height, final Side sideToPlay) {
         this.occupiedBoard = occupiedBoard;
         this.width = width;
         this.height = height;
         this.sideToPlay = sideToPlay;
-        moveCache = precacheMoves();
-    }
-
-    private Map<Side, List<Move>> precacheMoves() {
-        Map<Side, List<Move>> moves = new HashMap<>();
-        for (Side side : Side.values())
-        {
-            moves.put(side, calculateAvailableMoves(side));
-        }
-        return Collections.unmodifiableMap(moves);
     }
 
     public List<Row> getRows() {
@@ -47,36 +35,7 @@ public class BoardState {
     }
 
     public List<Move> getAvailableMoves(Side side) {
-        return moveCache.get(side);
-    }
-
-    private List<Move> calculateAvailableMoves(Side side) {
-        List<Move> moves = new ArrayList<>();
-        forEachTile((x, y) -> validMoveForSideAt(side, x, y).ifPresent(moves::add));
-        return moves;
-    }
-
-    private Optional<Move> validMoveForSideAt(Side side, int x, int y) {
-        if (side.relevantCoordinatesFrom(x, y).stream().anyMatch(this::coordinateIsOccupiedOrInvalid)) {
-            return Optional.empty();
-        }
-        return Optional.of(new Move(side, x, y));
-    }
-
-    private boolean coordinateIsOccupiedOrInvalid(Coordinate coordinate) {
-        return !isOnBoard(coordinate) || getOccupierAt(coordinate) != Occupier.EMPTY_OCCUPIER;
-    }
-
-    private boolean isOnBoard(Coordinate coordinate) {
-        return coordinate.getX() >= 0 && coordinate.getX() < width && coordinate.getY() >= 0 && coordinate.getY() < height;
-    }
-
-    private void forEachTile(BiConsumer<Integer, Integer> func) {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                func.accept(x, y);
-            }
-        }
+        return occupiedBoard.getAvailableMoves(side);
     }
 
     private Tile getTileAt(int x, int y) {
