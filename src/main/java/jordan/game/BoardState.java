@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class BoardState {
-    private final Map<Coordinate, Occupier> occupiedTiles;
+    private final OccupiedBoard occupiedBoard;
     private final int width;
     private final int height;
     private final Side sideToPlay;
     private final Map<Side, List<Move>> moveCache;
 
-    public BoardState(final Map<Coordinate, Occupier> occupiedTiles, final int width, final int height, final Side sideToPlay) {
-        this.occupiedTiles = Collections.unmodifiableMap(occupiedTiles);
+    public BoardState(final OccupiedBoard occupiedBoard, final int width, final int height, final Side sideToPlay) {
+        this.occupiedBoard = occupiedBoard;
         this.width = width;
         this.height = height;
         this.sideToPlay = sideToPlay;
@@ -88,7 +88,7 @@ public class BoardState {
     }
 
     private Occupier getOccupierAt(Coordinate coordinate) {
-        Optional<Occupier> occupier = Optional.ofNullable(occupiedTiles.get(coordinate));
+        Optional<Occupier> occupier = occupiedBoard.getPlayerAt(coordinate);
         return occupier.orElse(Occupier.EMPTY_OCCUPIER);
     }
 
@@ -105,11 +105,7 @@ public class BoardState {
     }
 
     public BoardState stateAfter(Move move, Occupier occupier, Side sideToPlay) {
-        Map<Coordinate, Occupier> tiles = new HashMap<>(this.occupiedTiles);
-        for (Coordinate coord : move.affectedCoordinates()) {
-            tiles.put(coord, occupier);
-        }
-        return new BoardState(tiles, width, height, sideToPlay);
+        return new BoardState(occupiedBoard.boardAfter(move), width, height, sideToPlay);
     }
 
     public Side getNextSideToPlay() {

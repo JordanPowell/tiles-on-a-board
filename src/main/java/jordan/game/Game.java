@@ -1,6 +1,7 @@
 package jordan.game;
 
 
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Game {
@@ -16,7 +17,7 @@ public class Game {
         assert this.verticalPlayer.getSide() == Side.VERTICAL;
         assert this.horizontalPlayer.getSide() == Side.HORIZONTAL;
         nextPlayer = this.verticalPlayer; // TODO: How to decide who goes first?
-        boardState = new BoardState(Collections.emptyMap(), boardWidth, boardHeight, nextPlayer.getSide());
+        boardState = new BoardState(OccupiedBoard.newBoard(boardWidth, boardHeight, Arrays.asList(verticalPlayer, horizontalPlayer)), boardWidth, boardHeight, nextPlayer.getSide());
     }
 
     public void playNextTurn() {
