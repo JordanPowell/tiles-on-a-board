@@ -35,7 +35,7 @@ public class AIPlayer extends Player {
         int bestValue = Integer.MIN_VALUE;
         for (Move move : availableMoves)
         {
-            int val = minMaxTree(boardState.stateAfter(move, this, opponent.getSide()), DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+            int val = minMaxTree(boardState.stateAfter(move, opponent.getSide()), DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
             if (val > bestValue)
             {
                 bestMove = move;
@@ -60,7 +60,7 @@ public class AIPlayer extends Player {
             int bestValue = Integer.MIN_VALUE;
             for (Move move : availableMoves)
             {
-                int val = minMaxTree(boardState.stateAfter(move, this, opponent.getSide()), depth - 1, alpha, beta, false);
+                int val = minMaxTree(boardState.stateAfter(move, opponent.getSide()), depth - 1, alpha, beta, false);
                 bestValue = max(bestValue, val);
                 alpha = max(alpha, bestValue);
                 if (beta <= alpha) {
@@ -74,7 +74,7 @@ public class AIPlayer extends Player {
             int bestValue = Integer.MAX_VALUE;
             for (Move move : availableMoves)
             {
-                int val = minMaxTree(boardState.stateAfter(move, opponent, this.getSide()), depth - 1, alpha, beta, true);
+                int val = minMaxTree(boardState.stateAfter(move, this.getSide()), depth - 1, alpha, beta, true);
                 bestValue = min(bestValue, val);
                 beta = min(beta, bestValue);
                 if (beta <= alpha) {

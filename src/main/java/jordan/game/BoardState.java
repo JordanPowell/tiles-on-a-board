@@ -63,7 +63,7 @@ public class BoardState {
         return sideToPlay;
     }
 
-    public BoardState stateAfter(Move move, Occupier occupier, Side sideToPlay) {
+    public BoardState stateAfter(Move move, Side sideToPlay) {
         return new BoardState(occupiedBoard.boardAfter(move), width, height, sideToPlay);
     }
 

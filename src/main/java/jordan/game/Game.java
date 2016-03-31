@@ -2,7 +2,6 @@ package jordan.game;
 
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class Game {
     private final Player verticalPlayer;
@@ -23,12 +22,12 @@ public class Game {
     public void playNextTurn() {
         assert nextPlayer.getSide() == boardState.getSideToPlay();
         Move move = nextPlayer.getMove(boardState);
-        playMove(move, nextPlayer);
+        playMove(move);
     }
 
-    private void playMove(Move move, Player movingPlayer) {
+    private void playMove(Move move) {
         switchPlayers();
-        boardState = boardState.stateAfter(move, movingPlayer, nextPlayer.getSide());
+        boardState = boardState.stateAfter(move, nextPlayer.getSide());
     }
 
     private void switchPlayers() {
